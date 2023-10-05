@@ -7,6 +7,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Grid />
+    <Grid
+      numCols={10}
+      numRows={5}
+      onSelect={(row, col) => {
+        console.log(`Clicked on (${row}, ${col})`);
+      }}
+    />
   </React.StrictMode>
 );
