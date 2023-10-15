@@ -1,27 +1,23 @@
-type Gate = {
-  gate: string;
-  qbit: number[];
-};
+class QuantumCircuit {
+  gates: { gate: string; qubits: number[] }[] = [];
 
-class Parser {
-  gates: Gate[] = [];
-  gateCache: Set<number> = new Set();
+  addGate(gate: string, qubits: number[]) {
+    this.gates.push({ gate, qubits });
+  }
 
-  addGate(gate: string, qbitPosition: number[]) {
-    const violatesConstraints = this.checkViolations(qbitPosition[0]);
-    if (violatesConstraints) {
-      console.error(`qbit at ${qbitPosition} violates constraints`);
-      return false;
+  checkConstraints(): string | null {
+    for (const gateData of this.gates) {
+      for (const qubit of gateData.qubits) {
+        if (qubit < 0) {
+          return `Invalid qubit index: ${qubit}`;
+        }
+      }
     }
 
-    this.gates.push({ gate, qbit: qbitPosition });
-    this.gateCache.add(qbitPosition[0]);
-    return true;
+    return null;
   }
 
-  checkViolations(qbitPosition: number): boolean {
-    return !this.gateCache.has(qbitPosition);
-  }
+  execute(): void {}
 }
 
-export default Parser;
+export { QuantumCircuit };
