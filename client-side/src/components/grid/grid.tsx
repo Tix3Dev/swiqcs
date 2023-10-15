@@ -2,42 +2,83 @@ import { useState } from "react";
 import "./grid.css";
 
 type GridProps = {
-  numRows: number;
   numCols: number;
-  onSelect: (row: number, col: number) => void;
+  numRows: number;
+  onSelect: (row: number, col: number) => string;
+  onRun: () => void;
 };
 
-function Grid({ numCols, numRows, onSelect }: GridProps) {
+function Grid({ numCols, numRows, onSelect, onRun }: GridProps) {
+  const [grid, setGrid] = useState<string[][]>(() => {
+    // Initialize the grid with empty cells
+    const initialGrid: string[][] = [];
+    for (let row = 0; row < numRows; row++) {
+      initialGrid.push(Array.from({ length: numCols }, () => ""));
+    }
+    return initialGrid;
+  });
+
   const [hoveredCell, setHoveredCell] = useState({ row: -1, col: -1 });
 
   const handleMouseOver = (row: number, col: number) => {
     setHoveredCell({ row, col });
   };
 
-  const rows = [];
-  for (let row = 0; row < numRows; row++) {
-    const cols = [];
-    for (let column = 0; column < numCols; column++) {
-      const className = `cell ${
-        hoveredCell.row === row && hoveredCell.col === column ? "hovered" : ""
-      }`;
-      cols.push(
-        <div
-          key={column}
-          className={className}
-          onMouseOver={() => handleMouseOver(row, column)}
-          onClick={() => onSelect(hoveredCell.row, hoveredCell.col)}
-        />
-      );
-    }
-    rows.push(
-      <div key={row} className="row">
-        {cols}
-      </div>
-    );
-  }
+  const handleCellClick = (row: number, col: number) => {
+    const type = onSelect(row, col);
 
-  return <div className="grid">{rows}</div>;
+    const newGrid = [...grid];
+    newGrid[row][col] = type;
+    setGrid(newGrid);
+  };
+
+  const addRow = () => {
+    const newRow = Array.from({ length: numCols }, () => "");
+    setGrid((prevGrid) => [...prevGrid, newRow]);
+  };
+
+  const removeRow = (rowIndex: number) => {
+    if (grid.length <= 1) {
+      return;
+    }
+    const newGrid = [...grid];
+    newGrid.splice(rowIndex, 1);
+    setGrid(newGrid);
+  };
+
+  return (
+    <div>
+      <button onClick={onRun}>Run</button>
+      <button onClick={addRow}>Add Row</button>
+      <div className="grid">
+        {grid.map((row, rowIndex) => (
+          <div key={rowIndex} data-testid={`row-${rowIndex}`} className="row">
+            <button
+              data-testid={`remove-row-${rowIndex}`}
+              onClick={() => removeRow(rowIndex)}
+            >
+              Remove Row
+            </button>
+            {row.map((cell, colIndex) => (
+              <div
+                key={colIndex}
+                data-testid={`cell-${rowIndex}-${colIndex}`} // Add data-testid attribute
+                className={`cell ${
+                  hoveredCell.row === rowIndex && hoveredCell.col === colIndex
+                    ? "hovered"
+                    : ""
+                }`}
+                onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
+                onClick={() => handleCellClick(rowIndex, colIndex)}
+              >
+                {cell}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default Grid;
+export { Grid };
