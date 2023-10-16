@@ -31,5 +31,4 @@ def controlled(self, ctrl_pos, targ_func, *targ_pos_args):
             self.qbit_cnt = orig_qbit_cnt
             self.state = orig_state
 
-
     self.state = comp_state(decomp)
