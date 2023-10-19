@@ -4,7 +4,7 @@ import "./grid.css";
 type GridProps = {
   numCols: number;
   numRows: number;
-  onSelect: (row: number, col: number) => string;
+  onSelect: (x: number, y: number) => string;
   onRun: () => void;
 };
 
@@ -25,7 +25,7 @@ function Grid({ numCols, numRows, onSelect, onRun }: GridProps) {
   };
 
   const handleCellClick = (row: number, col: number) => {
-    const type = onSelect(row, col);
+    const type = onSelect(col, row);
 
     const newGrid = [...grid];
     newGrid[row][col] = type;

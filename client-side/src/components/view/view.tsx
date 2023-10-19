@@ -3,12 +3,12 @@ import { Grid } from "@components/grid";
 import { useState } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
-type Gates = "H" | "X" | "CNOT";
+const circuit = new QuantumCircuit();
 
 function View() {
-  const gateTypes: Gates[] = ["H", "X", "CNOT"];
-  const [selectedGate, setSelectedGate] = useState<Gates | null>(null);
-  const circuit = new QuantumCircuit();
+  const gateTypes: string[] = ["H", "X", "CNOT", "BLACK_DUDE", "TOFFOLI"];
+  const [selectedGate, setSelectedGate] = useState("");
+  const [connecting, setConnecting] = useState(false);
 
   return (
     <>
@@ -18,18 +18,27 @@ function View() {
       <Grid
         numCols={10}
         numRows={1}
-        onSelect={(row, col) => {
-          circuit.addGate(selectedGate!, [col]);
-          return selectedGate as string;
+        onSelect={(x, y) => {
+          /* 
+            [
+              X (row) index 0
+              [
+                 Y idx 0     Y idx 1     Y idx 2    Y idx 3
+                ["H", NaN], ["I", NaN], ["BD", 0], ["X", 0]
+              ],
+
+              X (row) index 1
+              [
+                Y idx 0    Y idx 1     Y idx 2    Y idx 3
+                ["H", 0], ["I", NaN], ["BD", 0], ["X", NaN]
+              ]
+            ]
+          */
+
+          circuit.push(selectedGate, x, y, connecting ? y : NaN);
+          return selectedGate;
         }}
-        onRun={() => {
-          const constraintViolation = circuit.checkConstraints();
-          if (constraintViolation) {
-            console.error(`Constraint Violation: ${constraintViolation}`);
-          } else {
-            circuit.execute();
-          }
-        }}
+        onRun={() => circuit.execute()}
       />
       Selected: {selectedGate}
     </>

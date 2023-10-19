@@ -1,23 +1,14 @@
 class QuantumCircuit {
-  gates: { gate: string; qubits: number[] }[] = [];
+  gates: { gate: string; link: number }[][] = [];
 
-  addGate(gate: string, qubits: number[]) {
-    this.gates.push({ gate, qubits });
+  push(gate: string, x: number, y: number, link: number) {
+    this.gates[x] ??= [];
+    this.gates[x][y] = { gate, link };
   }
 
-  checkConstraints(): string | null {
-    for (const gateData of this.gates) {
-      for (const qubit of gateData.qubits) {
-        if (qubit < 0) {
-          return `Invalid qubit index: ${qubit}`;
-        }
-      }
-    }
-
-    return null;
+  execute(): void {
+    console.log(this.gates);
   }
-
-  execute(): void {}
 }
 
 export { QuantumCircuit };
