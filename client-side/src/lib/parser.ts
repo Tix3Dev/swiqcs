@@ -32,8 +32,28 @@ class QuantumCircuit {
     toItem.link = to.x;
   }
 
-  execute(): void {
-    console.log(this.gates);
+  async execute(): Promise<void> {
+    const newArray = [];
+
+    for (let x = 0; x < this.gates.length; x++) {
+      // Create a new sub-array of length x+1
+      newArray[x] = new Array(x + 1);
+
+      for (let y = 0; y < this.gates[x].length; y++) {
+        // Copy the values from the original array without the 'meta' property
+        newArray[x][y] = {
+          gate: this.gates[x][y].gate,
+          link: this.gates[x][y].link,
+        };
+      }
+    }
+
+    const response = await fetch("https://dummyjson.com/products/add", {
+      method: "POST",
+      body: JSON.stringify(newArray),
+    });
+    const data = await response.json();
+    console.log("Data", data);
   }
 }
 
