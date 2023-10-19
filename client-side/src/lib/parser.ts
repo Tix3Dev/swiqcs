@@ -26,7 +26,10 @@ class QuantumCircuit {
     const fromItem = this.find(from.gate, { x: from.x, y: from.y });
     const toItem = this.find(to.gate, { x: to.x, y: to.y });
 
-    console.log("Link", fromItem, toItem);
+    if (!fromItem || !toItem) return;
+
+    fromItem.link = from.x;
+    toItem.link = to.x;
   }
 
   execute(): void {

@@ -42,8 +42,6 @@ function View() {
         onLink={(from, to) => {
           // Cannot span vertically
           if (from.x !== to.x) return;
-
-          console.log("Selected range from", from, "To", to);
           circuit.link(from, to);
         }}
       />
