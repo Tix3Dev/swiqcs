@@ -39,8 +39,12 @@ function View() {
           return selectedGate;
         }}
         onRun={() => circuit.execute()}
-        onSelectTwo={(x1, y1, x2, y2) => {
-          console.log("Selected range from", x1, y1, "To", x2, y2);
+        onLink={(from, to) => {
+          // Cannot span vertically
+          if (from.x !== to.x) return;
+
+          console.log("Selected range from", from, "To", to);
+          circuit.link(from, to);
         }}
       />
       Selected: {selectedGate}

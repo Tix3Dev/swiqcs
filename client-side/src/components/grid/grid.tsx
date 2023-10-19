@@ -5,11 +5,11 @@ type GridProps = {
   numCols: number;
   numRows: number;
   onSelect: (x: number, y: number) => string;
-  onSelectTwo: (x1: number, y1: number, x2: number, y2: number) => void;
+  onLink: (from: GridItem, to: GridItem) => void;
   onRun: () => void;
 };
 
-function Grid({ numCols, numRows, onSelect, onSelectTwo, onRun }: GridProps) {
+function Grid({ numCols, numRows, onSelect, onLink, onRun }: GridProps) {
   const [grid, setGrid] = useState<string[][]>(() => {
     // Initialize the grid with empty cells
     const initialGrid: string[][] = [];
@@ -21,9 +21,7 @@ function Grid({ numCols, numRows, onSelect, onSelectTwo, onRun }: GridProps) {
 
   const [hoveredCell, setHoveredCell] = useState({ row: -1, col: -1 });
   const [isSelectingTwo, setIsSelectingTwo] = useState(false); // State to track if selecting two elements
-  const [selectedCells, setSelectedCells] = useState<
-    { x: number; y: number }[]
-  >([]);
+  const [selectedCells, setSelectedCells] = useState<Vector2D[]>([]);
 
   const handleMouseOver = (row: number, col: number) => {
     setHoveredCell({ row, col });
@@ -36,9 +34,14 @@ function Grid({ numCols, numRows, onSelect, onSelectTwo, onRun }: GridProps) {
         const newSelectedCells = [...prevSelectedCells, { x: col, y: row }];
 
         if (newSelectedCells.length === 2) {
-          // Two cells have been clicked, invoke onSelectTwo
+          // Two cells have been clicked, invoke onLink
           const [cell1, cell2] = newSelectedCells;
-          onSelectTwo(cell1.x, cell1.y, cell2.x, cell2.y);
+          console.log(newSelectedCells, grid[cell1.x][cell1.y]);
+
+          onLink(
+            { ...cell1, gate: grid[cell1.y][cell1.x] },
+            { ...cell2, gate: grid[cell2.y][cell2.x] }
+          );
           setIsSelectingTwo(false); // Exit "Select Two" mode
           return [];
         } else {
@@ -72,7 +75,7 @@ function Grid({ numCols, numRows, onSelect, onSelectTwo, onRun }: GridProps) {
     <div>
       <button onClick={onRun}>Run</button>
       <button onClick={addRow}>Add Row</button>
-      <button onClick={() => setIsSelectingTwo(true)}>Select Two</button>
+      <button onClick={() => setIsSelectingTwo(true)}>Link</button>
       <div className="grid">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} data-testid={`row-${rowIndex}`} className="row">
