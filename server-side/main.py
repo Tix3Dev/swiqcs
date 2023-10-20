@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 from qcomputation import *
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/products/add', methods=['POST'])
+@app.route('/evaluate', methods=['POST'])
 def receive_data():
     try:
         # receive
-        data = request.json 
+        data = request.get_json()
         print("Received data:", data)
 
         # DO SOMETHING
@@ -17,6 +20,7 @@ def receive_data():
         return jsonify({"message": response_message})
     
     except Exception as e:
+        print("ERROR:", e)
         return jsonify({"error": str(e)})
 
 if __name__ == '__main__':

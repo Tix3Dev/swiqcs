@@ -35,7 +35,12 @@ class QuantumCircuit {
   async execute(): Promise<void> {
     const newArray = [];
 
+    console.log(this.gates);
     for (let x = 0; x < this.gates.length; x++) {
+      if (!this.gates[x]) {
+        continue;
+      }
+
       // Create a new sub-array of length x+1
       newArray[x] = new Array(x + 1);
 
@@ -48,12 +53,15 @@ class QuantumCircuit {
       }
     }
 
-    const response = await fetch("https://dummyjson.com/products/add", {
+    const response = await fetch("http://127.0.0.1:5000/evaluate", {
       method: "POST",
       body: JSON.stringify(newArray),
+      headers: {
+        "Content-Type": "application/json", // Set the content type to JSON
+      },
     });
     const data = await response.json();
-    console.log("Data", data);
+    console.log("Message:", data["message"]);
   }
 }
 

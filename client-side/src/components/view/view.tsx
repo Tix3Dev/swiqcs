@@ -6,7 +6,8 @@ import { QuantumCircuit } from "src/lib/parser";
 const circuit = new QuantumCircuit();
 
 function View() {
-  const gateTypes: string[] = ["H", "X", "CNOT", "BLACK_DUDE", "TOFFOLI"];
+  // BD=black dot | CR=cross
+  const gateTypes: string[] = ["X", "Y", "Z", "H", "S", "T", "BD", "CR"];
   const [selectedGate, setSelectedGate] = useState("");
   const [connecting, setConnecting] = useState(false);
 
@@ -40,7 +41,7 @@ function View() {
         }}
         onRun={() => circuit.execute()}
         onLink={(from, to) => {
-          // Cannot span vertically
+          // Cannot span horizontally
           if (from.x !== to.x) return;
           circuit.link(from, to);
         }}
