@@ -13,9 +13,11 @@ function View() {
 
   return (
     <>
-      {gateTypes.map((type) => (
-        <Gate type={type} onSelect={() => setSelectedGate(type)} />
-      ))}
+      <div className="gates">
+        {gateTypes.map((type) => (
+          <Gate type={type} onSelect={() => setSelectedGate(type)} />
+        ))}
+      </div>
       <Grid
         numCols={10}
         numRows={1}
@@ -46,7 +48,9 @@ function View() {
           circuit.link(from, to);
         }}
       />
-      Selected: {selectedGate}
+      <div className="selection">
+        Selected: {selectedGate}
+      </div>
     </>
   );
 }

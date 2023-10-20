@@ -73,9 +73,11 @@ function Grid({ numCols, numRows, onSelect, onLink, onRun }: GridProps) {
 
   return (
     <div>
-      <button onClick={onRun}>Run</button>
-      <button onClick={addRow}>Add Row</button>
-      <button onClick={() => setIsSelectingTwo(true)}>Link</button>
+      <div className="buttons">
+        <button onClick={onRun}>Run</button>
+        <button onClick={addRow}>Add Row</button>
+        <button onClick={() => setIsSelectingTwo(true)}>Link</button>
+      </div>
       <div className="grid">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} data-testid={`row-${rowIndex}`} className="row">
@@ -85,28 +87,30 @@ function Grid({ numCols, numRows, onSelect, onLink, onRun }: GridProps) {
             >
               Remove Row
             </button>
-            {row.map((cell, colIndex) => (
-              <div
-                key={colIndex}
-                data-testid={`cell-${rowIndex}-${colIndex}`}
-                className={`cell ${
-                  hoveredCell.row === rowIndex && hoveredCell.col === colIndex
-                    ? "hovered"
-                    : ""
-                } ${
-                  selectedCells.some(
-                    (selectedCell) =>
-                      selectedCell.y === rowIndex && selectedCell.x === colIndex
-                  )
-                    ? "selected"
-                    : ""
-                }`}
-                onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-              >
-                {cell}
-              </div>
-            ))}
+            <div className="cells">
+              {row.map((cell, colIndex) => (
+                <div
+                  key={colIndex}
+                  data-testid={`cell-${rowIndex}-${colIndex}`}
+                  className={`cell ${
+                    hoveredCell.row === rowIndex && hoveredCell.col === colIndex
+                      ? "hovered"
+                      : ""
+                  } ${
+                    selectedCells.some(
+                      (selectedCell) =>
+                        selectedCell.y === rowIndex && selectedCell.x === colIndex
+                    )
+                      ? "selected"
+                      : ""
+                  }`}
+                  onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
+                  onClick={() => handleCellClick(rowIndex, colIndex)}
+                >
+                  {cell}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
