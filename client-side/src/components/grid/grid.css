@@ -1,3 +1,76 @@
+body {
+	background-color: #161616;
+}
+
+#root {
+	background-color: #262626;
+	width: 50em;
+	display: flex;
+	gap: 1em;
+	flex-direction: column;
+	align-items: center;
+	margin: 10em auto;
+	padding: 1em;
+}
+
+.gates {
+	display: flex;
+	justify-content: center;
+	gap: 1em;
+}
+
+.gate {
+	display: block;
+	line-height: 3em;
+	width: 3em;
+	height: 3em;
+	border: 0.1em solid black;
+	text-align: center;
+}
+
+.gate.red {
+	background-color: #FA4D56;
+}
+
+.gate.red:hover {
+	background-color: #c7363e;
+}
+
+.gate.blue {
+	background-color: #4589FF;
+}
+
+.gate.blue:hover {
+	background-color: #2a62c2;
+}
+
+.gate:hover {
+	cursor: pointer;
+}
+
+.buttons {
+	display: flex;
+	justify-content: center;
+	gap: 1em;
+	margin: 1em;
+}
+
+button {
+	height: 3em;
+	line-height: 2em;
+	padding: 0 2em;
+	font-size: 1em;
+	border: 0.1em solid transparent;
+	background-color: #313131;
+	color: #ccc;
+}
+
+button:hover {
+	cursor: pointer;
+	background-color: #4C4C4C;
+	color: white;
+}
+
 .grid {
 	display: flex;
 	flex-direction: column;
@@ -5,14 +78,31 @@
 
 .row {
 	display: flex;
+	gap: 1em;
 }
 
-.cell {
-	width: 50px;
-	height: 50px;
-	border: 1px solid #ccc;
+.cells {
+	display: flex;
+	flex-direction: row;
 }
 
-.hovered {
-	background-color: #eee;
+.cell,
+.cell:active {
+	width: 3em;
+	height: 3em;
+	border: 0.1em solid transparent;
+	background-color: #4C4C4C;
+	color: #ccc;
+	text-align: center;
+	line-height: 3em;
+}
+
+.cell:hover {
+	cursor: pointer;
+	background-color: #262626;
+}
+
+.selection {
+	color: white;
+	font-size: 1.5em;
 }

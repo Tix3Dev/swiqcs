@@ -3,18 +3,20 @@ import { Grid } from "@components/grid";
 import { useState } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
-type Gates = "H" | "X" | "CNOT";
+type Gates = "H" | "X" | "CNOT" | "Z" | "U";
 
 function View() {
-  const gateTypes: Gates[] = ["H", "X", "CNOT"];
+  const gateTypes: Gates[] = ["H", "X", "CNOT", "Z", "U"];
   const [selectedGate, setSelectedGate] = useState<Gates | null>(null);
   const circuit = new QuantumCircuit();
 
   return (
     <>
-      {gateTypes.map((type) => (
-        <Gate type={type} onSelect={() => setSelectedGate(type)} />
-      ))}
+      <div className="gates">
+        {gateTypes.map((type) => (
+          <Gate type={type} onSelect={() => setSelectedGate(type)} />
+        ))}
+      </div>
       <Grid
         numCols={10}
         numRows={1}
@@ -31,7 +33,9 @@ function View() {
           }
         }}
       />
-      Selected: {selectedGate}
+      <div className="selection">
+        Selected: {selectedGate}
+      </div>
     </>
   );
 }

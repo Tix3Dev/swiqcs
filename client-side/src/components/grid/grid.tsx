@@ -48,8 +48,10 @@ function Grid({ numCols, numRows, onSelect, onRun }: GridProps) {
 
   return (
     <div>
-      <button onClick={onRun}>Run</button>
-      <button onClick={addRow}>Add Row</button>
+      <div className="buttons">
+        <button onClick={onRun}>Run</button>
+        <button onClick={addRow}>Add Row</button>
+      </div>
       <div className="grid">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} data-testid={`row-${rowIndex}`} className="row">
@@ -59,21 +61,23 @@ function Grid({ numCols, numRows, onSelect, onRun }: GridProps) {
             >
               Remove Row
             </button>
-            {row.map((cell, colIndex) => (
-              <div
-                key={colIndex}
-                data-testid={`cell-${rowIndex}-${colIndex}`} // Add data-testid attribute
-                className={`cell ${
-                  hoveredCell.row === rowIndex && hoveredCell.col === colIndex
-                    ? "hovered"
-                    : ""
-                }`}
-                onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
-              >
-                {cell}
-              </div>
-            ))}
+            <div className="cells">
+              {row.map((cell, colIndex) => (
+                <div
+                  key={colIndex}
+                  data-testid={`cell-${rowIndex}-${colIndex}`} // Add data-testid attribute
+                  className={`cell ${
+                    hoveredCell.row === rowIndex && hoveredCell.col === colIndex
+                      ? "hovered"
+                      : ""
+                  }`}
+                  onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
+                  onClick={() => handleCellClick(rowIndex, colIndex)}
+                >
+                  {cell}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
