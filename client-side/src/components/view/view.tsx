@@ -3,21 +3,12 @@ import { Grid } from "@components/grid";
 import { useState } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
-<<<<<<< HEAD
-type Gates = "H" | "X" | "CNOT" | "Z" | "U";
-
-function View() {
-  const gateTypes: Gates[] = ["H", "X", "CNOT", "Z", "U"];
-  const [selectedGate, setSelectedGate] = useState<Gates | null>(null);
-  const circuit = new QuantumCircuit();
-=======
 const circuit = new QuantumCircuit();
 
 function View() {
   const gateTypes: string[] = ["H", "X", "CNOT", "BLACK_DUDE", "TOFFOLI"];
   const [selectedGate, setSelectedGate] = useState("");
   const [connecting, setConnecting] = useState(false);
->>>>>>> 10ebdd9f0dfa40f0f1065c44584763f218552f87
 
   return (
     <>
