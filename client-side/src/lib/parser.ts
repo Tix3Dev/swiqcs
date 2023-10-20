@@ -1,7 +1,13 @@
 class QuantumCircuit {
   gates: Array<Array<{ gate: string; link: number; meta: Vector2D }>> = [];
 
+  group_count: Array<number> = [];
+
   push(gate: string, x: number, y: number, link: number) {
+    if (this.group_count.length < y) {
+      this.group_count.push(0);
+    }
+
     this.gates[x] ??= [];
 
     // Fill in holes for the inner array
@@ -26,10 +32,23 @@ class QuantumCircuit {
     const fromItem = this.find(from.gate, { x: from.x, y: from.y });
     const toItem = this.find(to.gate, { x: to.x, y: to.y });
 
-    if (!fromItem || !toItem) return;
+    if (!fromItem || !toItem) {
+      console.log("wuuuhh1");
+      return;
+    }
+    if (from.x != to.x) {
+      console.log("weeeeh2");
+      return;
+    }
 
-    fromItem.link = from.x;
-    toItem.link = to.x;
+    fromItem.link = this.group_count[from.x];
+    toItem.link = this.group_count[from.x];
+
+    // TODO: for some reason the next link numbers I get when
+    // running the code are not 0,1,2,3 but rather 1,3,5
+    // but this is not a big problem as long as there are just
+    // different link groups
+    this.group_count[from.x] += 1;
   }
 
   async execute(): Promise<void> {
