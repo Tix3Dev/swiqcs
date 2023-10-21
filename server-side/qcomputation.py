@@ -266,3 +266,35 @@ class QState:
 
     def fredkin(self, ctrl_pos, swap_pos1, swap_pos2):
         self.ctrl(ctrl_pos, self.swap, swap_pos1, swap_pos2)
+
+
+class Protocol:
+    def __init__(self):
+        self.qs = QState(5, True) # TODO: before sending circuit, send info about circuit size etc.sd
+        print("Protocol initiated")
+
+    def process_gate(self, pos, gate):
+        if gate == 'I':
+            pass
+        elif gate == 'X':
+            self.qs.pauli_x(pos)
+        elif gate == 'Y':
+            self.qs.pauli_y(pos)
+        elif gate == 'Z':
+            self.qs.pauli_z(pos)
+        elif gate == 'H':
+            self.qs.hadamard(pos)
+        elif gate == 'S':
+            self.qs.phase(pos)
+        elif gate == 'T':
+            self.qs.pi_ov_8(pos)
+        else:
+            print("INVALID SINGLE GATE:", gate)
+
+    def process_group(self, group_pos, group):
+        print("group_pos", group_pos)
+        print("group", group)
+
+
+        if group == ['CR', 'CR']:
+            self.qs.swap(group_pos[0], group_pos[0])

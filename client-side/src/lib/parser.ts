@@ -41,8 +41,11 @@ class QuantumCircuit {
       return;
     }
 
+    console.log("okay we are here");
+    console.log(this.gates);
     fromItem.link = this.group_count[from.x];
     toItem.link = this.group_count[from.x];
+    console.log(this.gates);
 
     // TODO: for some reason the next link numbers I get when
     // running the code are not 0,1,2,3 but rather 1,3,5
