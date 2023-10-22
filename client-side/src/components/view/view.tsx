@@ -3,6 +3,18 @@ import { Grid } from "@components/grid";
 import { useState } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
+let globalCircuit: any = null;
+
+const createQuantumCircuit = (numRows: number) => {
+  if (!globalCircuit) {
+    globalCircuit = new QuantumCircuit(numRows);
+  }
+  else {
+    globalCircuit.updateNumRows(numRows);
+  }
+  return globalCircuit;
+};
+
 function View() {
   // BD=black dot | CR=cross
   const gateTypes: string[] = ["X", "Y", "Z", "H", "S", "T", "BD", "CR"];
@@ -10,7 +22,7 @@ function View() {
   const [connecting, setConnecting] = useState(false);
 
   const [numRows, setNumRows] = useState(1);
-  const circuit = new QuantumCircuit(numRows);
+  const circuit = createQuantumCircuit(numRows);
 
   // Function to update the numRows when it changes
   const handleNumRowsChange = (newNumRows: number) => {

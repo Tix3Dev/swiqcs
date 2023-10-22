@@ -69,7 +69,9 @@ class QState:
     # show all states including the impossible one (unless
     # otherwise noted) and show according probabilities
     # DISCLAIMER: rounding/floating point errors may occur
-    def show_state_and_probs(self, reduced=False):
+    def get_state_and_probs_str(self, reduced=False):
+        string = ""
+
         max_len = 0
         for element in self.state:
             if reduced and element == 0+0j:
@@ -96,13 +98,18 @@ class QState:
             prob_str = str(round((np.absolute(element)**2)*100, 4))
 
             if i > 0 and element.real >= 0:
-                print("+{}|{}>\t-> {}%".format(formatted_element, binary_str, prob_str))
+                string += "+{}|{}>\t-> {}%\n".format(formatted_element, binary_str, prob_str)
             elif i > 0 and element.real < 0:
-                print("{}|{}>\t-> {}%".format(formatted_element, binary_str, prob_str))
-            elif i <= 0 and element.real >= 0:    
-                print(" {}|{}>\t-> {}%".format(formatted_element, binary_str, prob_str))
+                string += "{}|{}>\t-> {}%\n".format(formatted_element, binary_str, prob_str)
+            elif i <= 0 and element.real >= 0:
+                string += " {}|{}>\t-> {}%\n".format(formatted_element, binary_str, prob_str)
             else:
-                print("{}|{}>\t-> {}%".format(formatted_element, binary_str, prob_str))
+                string += "{}|{}>\t-> {}%\n".format(formatted_element, binary_str, prob_str)
+        
+        return string
+
+    def show_state_and_probs(self, reduced=False):
+        print(self.get_state_and_probs_str(reduced))
 
     ###
     ### GATE CREATION HELPER ###

@@ -8,6 +8,10 @@ class QuantumCircuit {
     this.numRows = numRows;
   }
 
+  updateNumRows(numRows: number) {
+    this.numRows = numRows;
+  }
+
   push(gate: string, x: number, y: number, link: number) {
     if (this.group_count.length <= y) {
       this.group_count.push(0);
@@ -70,6 +74,10 @@ class QuantumCircuit {
 
       for (let y = 0; y < this.gates[x].length; y++) {
         // Copy the values from the original array without the 'meta' property
+        
+        // dirty fix
+        if (!this.gates[x][y].gate) continue;
+        
         newArray[x][y] = {
           gate: this.gates[x][y].gate,
           link: this.gates[x][y].link,
