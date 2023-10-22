@@ -312,33 +312,29 @@ class Protocol:
         print("after group_pos", group_pos)
         print("after group", group)
 
-
-        # NOTE: Those conditions don't account for weird edge cases / invalid inputs / too
-        # sophisticated
-
         # cnot
-        if group.count('BD') == 1 and group.count('X') == 1:
+        if len(group) == 2 and group.count('BD') == 1 and group.count('X') == 1:
             print("CNOT")
             self.qs.cnot(group_pos[group.index('BD')], group_pos[group.index['X']])
         # cz
-        elif group.count('BD') == 1 and group.count('Z') == 1:
+        elif len(group) == 2 and group.count('BD') == 1 and group.count('Z') == 1:
             print("CZ")
             self.qs.cz(group_pos[group.index('BD')], group_pos[group.index('Z')])
         # cp
-        elif group.count('BD') == 1 and group.count('S') == 1:
+        elif len(group) == 2 and group.count('BD') == 1 and group.count('S') == 1:
             print("CP")
             self.qs.cp(group_pos[group.index('BD')], group_pos[group.index('S')])
         # toffoli
-        elif group.count('BD') == 2 and group.count('X') == 1:
+        elif len(group) == 3 and group.count('BD') == 2 and group.count('X') == 1:
             print("TOFFOLI")
             bd_pos = [i for i, n in enumerate(group) if n == 'BD']
             self.qs.toffoli(group_pos[bd_pos[0]], group_pos[bd_pos[1]], group_pos[group.index('X')])
         # swap
-        elif group == ['CR', 'CR']:
+        elif len(group) == 2 and group == ['CR', 'CR']:
             print("SWAP")
             self.qs.swap(group_pos[0], group_pos[1])
         # fredkin
-        elif group.count('BD') == 1 and group.count('CR') == 2:
+        elif len(group) == 3 and group.count('BD') == 1 and group.count('CR') == 2:
             print("FREDKIN")
             swap_pos = [i for i, n in enumerate(group) if n == 'CR']
             self.qs.fredkin(group_pos[group.index('BD')], group_pos[swap_pos[0]], group_pos[swap_pos[1]])
