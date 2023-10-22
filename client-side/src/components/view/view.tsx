@@ -3,13 +3,19 @@ import { Grid } from "@components/grid";
 import { useState } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
-const circuit = new QuantumCircuit();
-
 function View() {
   // BD=black dot | CR=cross
   const gateTypes: string[] = ["X", "Y", "Z", "H", "S", "T", "BD", "CR"];
   const [selectedGate, setSelectedGate] = useState("");
   const [connecting, setConnecting] = useState(false);
+
+  const [numRows, setNumRows] = useState(1);
+  const circuit = new QuantumCircuit(numRows);
+
+  // Function to update the numRows when it changes
+  const handleNumRowsChange = (newNumRows: number) => {
+    setNumRows(newNumRows);
+  };
 
   return (
     <>
@@ -20,7 +26,7 @@ function View() {
       </div>
       <Grid
         numCols={10}
-        numRows={1}
+        numRows={numRows}
         onSelect={(x, y) => {
           /* 
             [
@@ -47,6 +53,7 @@ function View() {
           if (from.x !== to.x) return;
           circuit.link(from, to);
         }}
+        handleNumRowsChange={handleNumRowsChange} // Pass the callback to Grid
       />
       <div className="selection">
         Selected: {selectedGate}

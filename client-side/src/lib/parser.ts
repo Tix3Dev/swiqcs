@@ -1,10 +1,15 @@
 class QuantumCircuit {
+  info: Array<number> = [];
   gates: Array<Array<{ gate: string; link: number; meta: Vector2D }>> = [];
-
   group_count: Array<number> = [];
+  numRows: number;
+
+  constructor(numRows: number) {
+    this.numRows = numRows;
+  }
 
   push(gate: string, x: number, y: number, link: number) {
-    if (this.group_count.length < y) {
+    if (this.group_count.length <= y) {
       this.group_count.push(0);
     }
 
@@ -33,19 +38,16 @@ class QuantumCircuit {
     const toItem = this.find(to.gate, { x: to.x, y: to.y });
 
     if (!fromItem || !toItem) {
-      console.log("wuuuhh1");
+      console.log("weird conditional executed 1");
       return;
     }
     if (from.x != to.x) {
-      console.log("weeeeh2");
+      console.log("weird conditional executed 2");
       return;
     }
 
-    console.log("okay we are here");
-    console.log(this.gates);
     fromItem.link = this.group_count[from.x];
     toItem.link = this.group_count[from.x];
-    console.log(this.gates);
 
     // TODO: for some reason the next link numbers I get when
     // running the code are not 0,1,2,3 but rather 1,3,5
@@ -75,9 +77,11 @@ class QuantumCircuit {
       }
     }
 
+    this.info.push(this.numRows);
+
     const response = await fetch("http://127.0.0.1:5000/evaluate", {
       method: "POST",
-      body: JSON.stringify(newArray),
+      body: JSON.stringify([...this.info, ...newArray]), // concat two array notation
       headers: {
         "Content-Type": "application/json", // Set the content type to JSON
       },

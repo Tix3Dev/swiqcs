@@ -269,8 +269,10 @@ class QState:
 
 
 class Protocol:
-    def __init__(self):
-        self.qs = QState(5, True) # TODO: before sending circuit, send info about circuit size etc.sd
+    def __init__(self, qbit_cnt, info=False):
+        print("Protocol: qbit_cnt", qbit_cnt)
+        print("Protocol: info", info)
+        self.qs = QState(qbit_cnt, info) # TODO: before sending circuit, send info about circuit size etc.sd
         print("Protocol initiated")
 
     def process_gate(self, pos, gate):
@@ -292,9 +294,52 @@ class Protocol:
             print("INVALID SINGLE GATE:", gate)
 
     def process_group(self, group_pos, group):
-        print("group_pos", group_pos)
-        print("group", group)
+        print("before group_pos", group_pos)
+        print("before group", group)
+
+        i = 0
+        while True:
+            if i >= len(group):
+                break
+
+            if group[i] == 'I':
+                group.pop(i)
+                group_pos.pop(i)
+                i -= 1
+            
+            i += 1
+
+        print("after group_pos", group_pos)
+        print("after group", group)
 
 
-        if group == ['CR', 'CR']:
-            self.qs.swap(group_pos[0], group_pos[0])
+        # NOTE: Those conditions don't account for weird edge cases / invalid inputs / too
+        # sophisticated
+
+        # cnot
+        if group.count('BD') == 1 and group.count('X') == 1:
+            print("CNOT")
+            self.qs.cnot(group_pos[group.index('BD')], group_pos[group.index['X']])
+        # cz
+        elif group.count('BD') == 1 and group.count('Z') == 1:
+            print("CZ")
+            self.qs.cz(group_pos[group.index('BD')], group_pos[group.index('Z')])
+        # cp
+        elif group.count('BD') == 1 and group.count('S') == 1:
+            print("CP")
+            self.qs.cp(group_pos[group.index('BD')], group_pos[group.index('S')])
+        # toffoli
+        elif group.count('BD') == 2 and group.count('X') == 1:
+            print("TOFFOLI")
+            bd_pos = [i for i, n in enumerate(group) if n == 'BD']
+            self.qs.toffoli(group_pos[bd_pos[0]], group_pos[bd_pos[1]], group_pos[group.index('X')])
+        # swap
+        elif group == ['CR', 'CR']:
+            print("SWAP")
+            self.qs.swap(group_pos[0], group_pos[1])
+        # fredkin
+        elif group.count('BD') == 1 and group.count('CR') == 2:
+            print("FREDKIN")
+            swap_pos = [i for i, n in enumerate(group) if n == 'CR']
+            self.qs.fredkin(group_pos[group.index('BD')], group_pos[swap_pos[0]], group_pos[swap_pos[1]])
+        
