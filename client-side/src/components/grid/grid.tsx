@@ -70,10 +70,12 @@ function Grid({ numCols, numRows, onSelect, onLink, onRun, handleNumRowsChange }
     if (grid.length <= 1) {
       return;
     }
+    console.log("we did it")
     const newGrid = [...grid];
     newGrid.splice(rowIndex, 1);
-    setGrid(newGrid);
 
+    setGrid(newGrid);
+    
     // Call the handleNumRowsChange function to update the number of rows
     handleNumRowsChange(numRows - 1);
   };

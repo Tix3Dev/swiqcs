@@ -45,7 +45,7 @@ class QuantumCircuit {
       console.log("weird conditional executed 1");
       return;
     }
-    if (from.x != to.x) {
+    if (from.x !== to.x) {
       console.log("weird conditional executed 2");
       return;
     }
@@ -75,8 +75,10 @@ class QuantumCircuit {
       for (let y = 0; y < this.gates[x].length; y++) {
         // Copy the values from the original array without the 'meta' property
         
-        // dirty fix
-        if (!this.gates[x][y].gate) continue;
+        if (!this.gates[x][y].gate) {
+          console.log("weird conditional executed 3");
+          continue;
+        }
         
         newArray[x][y] = {
           gate: this.gates[x][y].gate,
@@ -87,6 +89,7 @@ class QuantumCircuit {
 
     this.info.push(this.numRows);
 
+    // update server url if necessary
     const response = await fetch("http://127.0.0.1:5000/evaluate", {
       method: "POST",
       body: JSON.stringify([...this.info, ...newArray]), // concat two array notation
