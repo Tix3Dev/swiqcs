@@ -25,7 +25,15 @@ function View() {
   const circuit = createQuantumCircuit(numRows);
 
   // Function to update the numRows when it changes
-  const handleNumRowsChange = (newNumRows: number) => {
+  const handleNumRowsChange = (newNumRows: number, rowIndex: number) => {
+    if (newNumRows > numRows) {
+      console.log("number of rows increased");
+    }
+    else {
+      console.log("number of rows decreased");
+      circuit.removeRow(rowIndex);
+    }
+
     setNumRows(newNumRows);
   };
 

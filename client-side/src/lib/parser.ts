@@ -1,5 +1,4 @@
 class QuantumCircuit {
-  info: Array<number> = [];
   gates: Array<Array<{ gate: string; link: number; meta: Vector2D }>> = [];
   group_count: Array<number> = [];
   numRows: number;
@@ -60,6 +59,23 @@ class QuantumCircuit {
     this.group_count[from.x] += 1;
   }
 
+  removeRow(rowIndex: number) {
+    console.log("before");
+    console.log(this.gates);
+    for (let x = 0; x < this.gates.length; x++) {
+      if (!this.gates[x]) {
+        continue;
+      }
+
+      if (typeof this.gates[x][rowIndex] === 'undefined') continue;
+
+      this.gates[x].splice(rowIndex, 1);
+    }
+
+    console.log("after");
+    console.log(this.gates);
+  }
+
   async execute(): Promise<void> {
     const newArray = [];
 
@@ -75,7 +91,7 @@ class QuantumCircuit {
       for (let y = 0; y < this.gates[x].length; y++) {
         // Copy the values from the original array without the 'meta' property
         
-        if (!this.gates[x][y].gate) {
+        if (!this.gates[x][y]) {
           console.log("weird conditional executed 3");
           continue;
         }
@@ -87,12 +103,10 @@ class QuantumCircuit {
       }
     }
 
-    this.info.push(this.numRows);
-
     // update server url if necessary
     const response = await fetch("http://127.0.0.1:5000/evaluate", {
       method: "POST",
-      body: JSON.stringify([...this.info, ...newArray]), // concat two array notation
+      body: JSON.stringify([...[this.numRows], ...newArray]), // concat two array notation
       headers: {
         "Content-Type": "application/json", // Set the content type to JSON
       },

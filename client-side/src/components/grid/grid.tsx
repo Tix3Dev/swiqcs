@@ -7,7 +7,7 @@ type GridProps = {
   onSelect: (x: number, y: number) => string;
   onLink: (from: GridItem, to: GridItem) => void;
   onRun: () => void;
-  handleNumRowsChange: (newNumRows: number) => void;
+  handleNumRowsChange: (newNumRows: number, rowIndex: number) => void;
 };
 
 function Grid({ numCols, numRows, onSelect, onLink, onRun, handleNumRowsChange }: GridProps) {
@@ -63,21 +63,20 @@ function Grid({ numCols, numRows, onSelect, onLink, onRun, handleNumRowsChange }
     setGrid((prevGrid) => [...prevGrid, newRow]);
 
     // Call the handleNumRowsChange function to update the number of rows
-    handleNumRowsChange(numRows + 1);
+    handleNumRowsChange(numRows + 1, numRows);
   };
 
   const removeRow = (rowIndex: number) => {
     if (grid.length <= 1) {
       return;
     }
-    console.log("we did it")
     const newGrid = [...grid];
     newGrid.splice(rowIndex, 1);
 
     setGrid(newGrid);
     
     // Call the handleNumRowsChange function to update the number of rows
-    handleNumRowsChange(numRows - 1);
+    handleNumRowsChange(numRows - 1, rowIndex);
   };
 
   return (
