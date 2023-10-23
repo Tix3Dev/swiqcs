@@ -21,7 +21,6 @@ function View() {
   const [selectedGate, setSelectedGate] = useState("");
   const [connecting, setConnecting] = useState(false);
   const [outputString, setOutputString] = useState("");
-  const [rerender, setRerender] = useState(0);
 
   const [numRows, setNumRows] = useState(1);
   const circuit = createQuantumCircuit(numRows);
@@ -39,10 +38,9 @@ function View() {
     setNumRows(newNumRows);
   };
 
-  // Use useEffect to re-render when outputString changes
   useEffect(() => {
-    setRerender((prev) => prev + 1);
-  }, [outputString]);
+    setOutputString(circuit.outputString);
+  }, [circuit.outputString]);
 
   return (
     <>
@@ -77,10 +75,15 @@ function View() {
           circuit.push(selectedGate, x, y, connecting ? y : NaN);
           return selectedGate;
         }}
-        onRun={() => {
-          circuit.execute();
+        // onRun={() => {
+        //   circuit.execute();
+        //   setOutputString(circuit.outputString);
+        // }}
+        onRun={async() => {
+          await circuit.execute();
           setOutputString(circuit.outputString);
         }}
+
         onLink={(from, to) => {
           // Cannot span horizontally
           if (from.x !== to.x) return;
@@ -91,7 +94,7 @@ function View() {
       <div className="output">
         Output:
       </div>
-      <div className="output" key={rerender}>
+      <div className="output">
         {outputString}
       </div>
     </>

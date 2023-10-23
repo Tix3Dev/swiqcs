@@ -322,7 +322,7 @@ class Protocol:
         # cnot
         if len(group) == 2 and group.count('BD') == 1 and group.count('X') == 1:
             print("CNOT")
-            self.qs.cnot(group_pos[group.index('BD')], group_pos[group.index['X']])
+            self.qs.cnot(group_pos[group.index('BD')], group_pos[group.index('X')])
         # cz
         elif len(group) == 2 and group.count('BD') == 1 and group.count('Z') == 1:
             print("CZ")

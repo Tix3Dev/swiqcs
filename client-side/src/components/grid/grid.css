@@ -1,5 +1,6 @@
 body {
 	background-color: #161616;
+	font-family: monospace, monospace;
 }
 
 #root {
@@ -104,10 +105,11 @@ button:hover {
 
 .selection {
 	color: white;
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 .output {
 	color: white;
-	font-size: 1.5em;
+	font-size: 1.3em;
+	white-space:pre
 }
