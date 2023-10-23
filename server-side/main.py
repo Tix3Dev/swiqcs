@@ -16,6 +16,23 @@ def receive_data():
     qbit_cnt = data[0]
     data = data[1:]
 
+    # sanity cleaning of data (remove None elements from columns)
+    i = 0
+    while True:
+        if i >= len(data):
+            break
+        if not data[i]:
+            continue
+        j = 0
+        while True:
+            if j >= len(data[i]):
+                break
+            if data[i][j] == None:
+                data[i].pop(j)
+                j -= 1
+            j += 1
+        i += 1
+
     print("New data:", data)
 
     protocol = Protocol(qbit_cnt, True)
@@ -60,7 +77,7 @@ def receive_data():
     print("---OUTPUT END---")
 
     # send response back
-    response_message = "Data received successfully"
+    response_message = protocol.qs.get_state_and_probs_str(True)
     return jsonify({"message": response_message})
 
     # except Exception as e:

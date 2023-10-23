@@ -1,6 +1,6 @@
 import { Gate } from "@components/gate";
 import { Grid } from "@components/grid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QuantumCircuit } from "src/lib/parser";
 
 let globalCircuit: any = null;
@@ -20,6 +20,8 @@ function View() {
   const gateTypes: string[] = ["X", "Y", "Z", "H", "S", "T", "BD", "CR"];
   const [selectedGate, setSelectedGate] = useState("");
   const [connecting, setConnecting] = useState(false);
+  const [outputString, setOutputString] = useState("");
+  const [rerender, setRerender] = useState(0);
 
   const [numRows, setNumRows] = useState(1);
   const circuit = createQuantumCircuit(numRows);
@@ -37,12 +39,20 @@ function View() {
     setNumRows(newNumRows);
   };
 
+  // Use useEffect to re-render when outputString changes
+  useEffect(() => {
+    setRerender((prev) => prev + 1);
+  }, [outputString]);
+
   return (
     <>
       <div className="gates">
         {gateTypes.map((type) => (
           <Gate type={type} onSelect={() => setSelectedGate(type)} />
         ))}
+      </div>
+      <div className="selection">
+        Selected: {selectedGate}
       </div>
       <Grid
         numCols={10}
@@ -67,7 +77,10 @@ function View() {
           circuit.push(selectedGate, x, y, connecting ? y : NaN);
           return selectedGate;
         }}
-        onRun={() => circuit.execute()}
+        onRun={() => {
+          circuit.execute();
+          setOutputString(circuit.outputString);
+        }}
         onLink={(from, to) => {
           // Cannot span horizontally
           if (from.x !== to.x) return;
@@ -75,8 +88,11 @@ function View() {
         }}
         handleNumRowsChange={handleNumRowsChange} // Pass the callback to Grid
       />
-      <div className="selection">
-        Selected: {selectedGate}
+      <div className="output">
+        Output:
+      </div>
+      <div className="output" key={rerender}>
+        {outputString}
       </div>
     </>
   );

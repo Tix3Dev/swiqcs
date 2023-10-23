@@ -2,6 +2,7 @@ class QuantumCircuit {
   gates: Array<Array<{ gate: string; link: number; meta: Vector2D }>> = [];
   group_count: Array<number> = [];
   numRows: number;
+  outputString: String = "";
 
   constructor(numRows: number) {
     this.numRows = numRows;
@@ -60,38 +61,21 @@ class QuantumCircuit {
   }
 
   removeRow(rowIndex: number) {
-    console.log("rowIndex");
-    console.log(rowIndex);
-
-
-    console.log("before");
-    console.log(this.gates);
     for (let x = 0; x < this.gates.length; x++) {
+      console.log(this.gates[x]);
+
       if (!this.gates[x]) {
         continue;
       }
 
       if (typeof this.gates[x][rowIndex] === 'undefined') continue;
 
-      console.log("hello");
-      console.log(this.gates[x].length);
-      console.log(this.gates[x]);
       this.gates[x].splice(rowIndex, 1);
-      console.log("world")
-      console.log(this.gates[x].length);
-      console.log(this.gates[x]);
-
+      
       if (this.gates[x].length === 0) {
-        console.log("wuuuf");
-        console.log(this.gates);
         this.gates.splice(x, 1);
-        console.log("weef");
-        console.log(this.gates);
       }
     }
-
-    console.log("after");
-    console.log(this.gates);
   }
 
   async execute(): Promise<void> {
@@ -104,16 +88,17 @@ class QuantumCircuit {
       }
 
       // Create a new sub-array of length x+1
-      newArray[x] = new Array(x + 1);
+      // newArray[x] = new Array(x + 1); // TODO: WHYYYYYYYYY
+      newArray[x] = new Array(this.gates[x].length);
 
       for (let y = 0; y < this.gates[x].length; y++) {
         // Copy the values from the original array without the 'meta' property
-        
+
         if (!this.gates[x][y]) {
           console.log("weird conditional executed 3");
           continue;
         }
-        
+
         newArray[x][y] = {
           gate: this.gates[x][y].gate,
           link: this.gates[x][y].link,
@@ -130,7 +115,9 @@ class QuantumCircuit {
       },
     });
     const data = await response.json();
-    console.log("Message:", data["message"]);
+    console.log("Message:");
+    console.log(data["message"]);
+    this.outputString = data["message"];
   }
 }
 
