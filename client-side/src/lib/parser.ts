@@ -60,6 +60,10 @@ class QuantumCircuit {
   }
 
   removeRow(rowIndex: number) {
+    console.log("rowIndex");
+    console.log(rowIndex);
+
+
     console.log("before");
     console.log(this.gates);
     for (let x = 0; x < this.gates.length; x++) {
@@ -69,7 +73,21 @@ class QuantumCircuit {
 
       if (typeof this.gates[x][rowIndex] === 'undefined') continue;
 
+      console.log("hello");
+      console.log(this.gates[x].length);
+      console.log(this.gates[x]);
       this.gates[x].splice(rowIndex, 1);
+      console.log("world")
+      console.log(this.gates[x].length);
+      console.log(this.gates[x]);
+
+      if (this.gates[x].length === 0) {
+        console.log("wuuuf");
+        console.log(this.gates);
+        this.gates.splice(x, 1);
+        console.log("weef");
+        console.log(this.gates);
+      }
     }
 
     console.log("after");
