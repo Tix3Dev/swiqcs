@@ -69,14 +69,9 @@ class QuantumCircuit {
 
       if (typeof this.gates[x][rowIndex] === 'undefined') continue;
 
-      console.log("beforeeee");
-      console.log(this.gates[x]);
       this.gates[x].splice(rowIndex, 1);
-      console.log("after");
-      console.log(this.gates[x]);
-      
+
       if (this.gates[x].length === 0) {
-        console.log("bad boi actually executed");
         this.gates.splice(x, 1);
         x -= 1;
       }
