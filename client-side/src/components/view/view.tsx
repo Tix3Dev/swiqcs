@@ -86,7 +86,10 @@ function View() {
 
         onLink={(from, to) => {
           // Cannot span horizontally
-          if (from.x !== to.x) return;
+          if (from.x !== to.x) {  
+            console.log("weird conditional executed 11");
+            return;
+          }
           circuit.link(from, to);
         }}
         handleNumRowsChange={handleNumRowsChange} // Pass the callback to Grid

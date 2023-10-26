@@ -37,7 +37,8 @@ function Grid({ numCols, numRows, onSelect, onLink, onRun, handleNumRowsChange }
         if (newSelectedCells.length === 2) {
           // Two cells have been clicked, invoke onLink
           const [cell1, cell2] = newSelectedCells;
-          console.log(newSelectedCells, grid[cell1.x][cell1.y]);
+          // console.log(grid[cell1.x][cell1.y]); // gives error
+          console.log(newSelectedCells, grid[cell1.y][cell1.x]);
 
           onLink(
             { ...cell1, gate: grid[cell1.y][cell1.x] },
