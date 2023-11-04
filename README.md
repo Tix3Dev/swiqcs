@@ -56,7 +56,8 @@ Each horizontal wire represents a qubit. Per convention, we initialize all qubit
 $$|0\rangle \otimes|0\rangle \otimes|0\rangle \otimes|0\rangle \otimes|0\rangle$$
 
 As remarked before, this state may change due to gates being applied. The first change will be the top left box containing a "H" (so called Hadamard Gate), since the algorithm goes through each column from top to bottom (and from left column to right column). If we apply a Hadamard gate to the $|0\rangle$ state, we will get:
-$$\begin{aligned}
+$$
+\begin{aligned}
 & H(|0\rangle)=\frac{1}{\sqrt{2}}\left\{\begin{array}{cc}
 1 & 1 \\
 1 & -1
@@ -72,9 +73,9 @@ $$\begin{aligned}
 \end{array}\right\}+\left\{\begin{array}{l}
 0 \\
 1
-\end{array}\right\}\right)=\frac{1}{\sqrt{2}}(|0\rangle+|1\rangle\rangle
-\end{aligned}$$
-
+\end{array}\right\}\right)=\frac{1}{\sqrt{2}}(|0\rangle+|1\rangle)
+\end{aligned}
+$$
 
 
 
