@@ -44,6 +44,10 @@ Initial state: |00>
 6. To create vertical wires (e.g. for a CNOT, consisting of a CR and a X), click "Link", then click the position where the vertical wire should start, then where it should end (both have to be occupied by a gate, however in between there may very well be nothing)
 7. To execute the circuit, click "Run" and wait for the server to send the output back
 
+<img src="https://github.com/Tix3Dev/swiqcs/blob/main/misc/Webinterface%20demo.gif">
+
+^ Creating a GHZ-State (video quality is bad)
+
 # How it works
 As this simulator uses a state vector simulation approach, upon initialization of `QState`, a numpy array representing the initial vector is created. The vector may be changed by applying gates onto qubits. The gate may either be a single-qubit gate, or a multi-qubit gate.
 
